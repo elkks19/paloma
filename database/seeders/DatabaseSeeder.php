@@ -9,6 +9,10 @@ use Database\Seeders\FavoritoSeeder;
 use Database\Seeders\NegocioSeeder;
 use Database\Seeders\ProductoSeeder;
 use Database\Seeders\ReviewSeeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\CategoriaSeeder;
+use Database\Seeders\LugarSeeder;
+use Database\Seeders\LugarTuristicoSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,11 +22,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UserSeeder::class,
+            CategoriaSeeder::class,
             FavoritoSeeder::class,
+            LugarSeeder::class,
+            LugarTuristicoSeeder::class,
             NegocioSeeder::class,
             ProductoSeeder::class,
-            ReviewSeeder::class
+            ReviewSeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class,
         ]);
 
     }

@@ -18,10 +18,9 @@ class AuthenticatedSessionController extends Controller
     {
         $token = $request->authenticate();
 
-        $request->session()->regenerate();
-
         return response()->json(['token' => $token]);
     }
+
 
     /**
      * Destroy an authenticated session.
@@ -30,9 +29,7 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
+        $request->user()->tokens()->delete();
 
         return response()->noContent();
     }

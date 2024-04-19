@@ -54,7 +54,7 @@ class LoginRequest extends FormRequest
 
         $user = Auth::user();
 
-        $token = $user->createToken($request->token_name);
+        $token = $user->createToken('token');
 
         return $token->plainTextToken;
     }
