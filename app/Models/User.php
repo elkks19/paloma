@@ -10,10 +10,16 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles, SoftDeletes, HasApiTokens;
+
+    public function lugar() : HasOne
+    {
+        return $this->hasOne(Lugar::class);
+    }
 
     public function reviews() : HasMany
     {

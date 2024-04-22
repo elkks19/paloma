@@ -12,6 +12,12 @@ class LugarSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // Lugar::create([
+        //     'nombre' => 'Prueba',
+        //     'descripcion' => 'lugar de prueba',
+        //     'ubicacion' => ['a' => 'b'],
+        //     'menu' => ['producto' => 'caracoles'],
+        //     'calificacion' => 1.2
+        // ]);
     }
 }

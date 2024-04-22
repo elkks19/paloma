@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Observers\LugarObserver;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[ObservedBy(LugarObserver::class)]
 class Lugar extends Model
@@ -44,5 +44,10 @@ class Lugar extends Model
     public function reviews() : HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function dueno() : BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

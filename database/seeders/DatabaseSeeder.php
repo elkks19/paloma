@@ -22,15 +22,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            UserSeeder::class,
+            NegocioSeeder::class,
             CategoriaSeeder::class,
             FavoritoSeeder::class,
             LugarSeeder::class,
             LugarTuristicoSeeder::class,
-            NegocioSeeder::class,
             ProductoSeeder::class,
             ReviewSeeder::class,
             RoleSeeder::class,
-            UserSeeder::class,
         ]);
 
     }

@@ -2,14 +2,19 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Hash;
+
+use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
-class LoginRequest extends FormRequest
+use App\Models\User;
+
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,26 +27,38 @@ class LoginRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }
 
+
+    public function register(): User
+    {
+        return User::create([
+            'name' => $this->input('name'),
+            'email' => $this->input('email'),
+            'password' => Hash::make($this->input('password')),
+        ]);
+    }
+
     /**
-     * Attempt to authenticate the request's credentials.
+     * Get the validated data from the request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @return array<string, mixed>
      */
-    public function authenticate(): string
+    public function authenticate() : string
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt($this->only('email', 'password')))
+        {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
