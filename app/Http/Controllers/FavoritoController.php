@@ -2,35 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreFavoritoRequest;
 use App\Http\Requests\UpdateFavoritoRequest;
 use App\Models\Favorito;
+use Illuminate\Support\Facades\Auth;
 
 class FavoritoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-        return Favorito::all();
+        $user = Auth::user();
+        return $user->favoritos();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function negocios()
     {
-        //
+        $user = Auth::user();
+
+        $favoritos = Favorito::with('lugar')->where('user_id', $user->id)->whereHas('lugar', function ($query){
+            $query->where('tipo', 'Negocio');
+        })->get();
+
+        return response()->json($favoritos);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreFavoritoRequest $request)
+    public function lugaresTuristicos()
     {
-        //
+        $user = Auth::user();
+
+        $favoritos = Favorito::with('lugar')->where('user_id', $user->id)->whereHas('lugar', function ($query){
+            $query->where('tipo', 'LugarTuristico');
+        })->get();
+
+        return response()->json($favoritos);
     }
 
     /**

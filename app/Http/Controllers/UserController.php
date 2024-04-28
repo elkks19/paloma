@@ -2,66 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Lugar;
+
+use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function nombre(){
+        $user = User::find(11);
+        return json_encode(['name' => $user->name]);
+    }
+
     public function index()
     {
+        return Auth::user();
         return User::with('lugar')->get();
         return User::all();
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(): JsonResponse
     {
-        //
+        $user = Auth::user();
+        return response()->json([
+            'name' => $user->name,
+            'email' => $user->email,
+            'createdAt' => $user->created_at
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+    public function update(UpdateUserRequest $request)
     {
-        //
+        $user = Auth::user();
+        
+        return $user;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $user = Auth::user();
+        $user->delete();
+        return $user;
     }
 }

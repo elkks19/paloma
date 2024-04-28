@@ -17,10 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100)->unique();
             $table->text('descripcion');
-            $table->json('ubicacion')->unique();
-            $table->json('menu');
+            $table->json('ubicacion');
+            $table->json('menu')->nullable();
             $table->foreignIdFor(User::class)->constrained();
-            $table->float('calificacion', 2);
+            $table->float('calificacion', 2)->default(0);
+            $table->string('tipo', 20);
+            $table->string('contacto', 8)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -2,65 +2,90 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreLugarTuristicoRequest;
 use App\Http\Requests\UpdateLugarTuristicoRequest;
-use App\Models\LugarTuristico;
+use App\Models\Lugar;
 
 class LugarTuristicoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $lugares = Lugar::where('tipo', 'LugarTuristico')->get();
+        $user = Auth::user();
+
+        if ($user == null)
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        $favoritos = $user->favoritos()->get();
+
+        $response = [];
+        foreach ($lugares as $lugar) {
+            $response[] = [
+                'id' => $lugar->id,
+                'nombre' => $lugar->nombre,
+                'descripcion' => $lugar->descripcion,
+                'ubicacion' => $lugar->ubicacion,
+                'menu' => $lugar->menu,
+                'calificacion' => $lugar->calificacion,
+                'favorito' => $favoritos->contains($lugar->id)
+            ];
+        }
+        return response()->json($response, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreLugarTuristicoRequest $request)
     {
-        //
+        $lugarTuristico = $request->save();
+
+        if($lugarTuristico == null)
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        return response()->json($lugarTuristico, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(LugarTuristico $lugarTuristico)
+    public function show(int $id)
     {
-        //
+        $lugar = Lugar::find($id);
+
+        if($lugar == null)
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        return response()->json($lugar, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(LugarTuristico $lugarTuristico)
+    public function update(UpdateLugarTuristicoRequest $request)
     {
-        //
+        if(!$this->verifyToken())
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        $lugar = $request->save();
+        if($lugar == null)
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        return response()->json($lugar, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateLugarTuristicoRequest $request, LugarTuristico $lugarTuristico)
+    public function destroy()
     {
-        //
+        if(!$this->verifyToken())
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        $user = Auth::user();
+        $lugar = $user->lugar()->get();
+        $lugarTuristico = $lugar->negocio()->get();
+
+        $lugarTuristico->delete();
+        return response()->json(['message' => 'Deleted'], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(LugarTuristico $lugarTuristico)
+    private function verifyToken()
     {
-        //
+        $user = Auth::user();
+        $lugar = $user->lugar()->get();
+        if($lugar == null)
+            return false;
+
+        return $user->tokenCan('negocio:'.$lugar->nombre);
     }
 }

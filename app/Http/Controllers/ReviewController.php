@@ -4,32 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
+use App\Models\Lugar;
 use App\Models\Review;
 
 class ReviewController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(int $id)
     {
-        //
+        $lugar = Lugar::find($id);
+        $reviews = $lugar->reviews();
+
+        return response()->json($reviews);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreReviewRequest $request)
     {
-        //
+        $request->save();
+
+        return response()->isSuccessful();
     }
 
     /**

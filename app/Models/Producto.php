@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 use App\Observers\ProductoObserver;
 
@@ -26,7 +27,7 @@ class Producto extends Model
 
     public function negocio() : BelongsTo
     {
-        return $this->belongsTo(Negocio::class);
+        return $this->belongsTo(Lugar::class);
     }
 
     public function categorias() : BelongsToMany

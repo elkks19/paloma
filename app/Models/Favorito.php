@@ -17,11 +17,11 @@ class Favorito extends Model
 
     public function usuario() : BelongsTo
     {
-        return $this->belongsTo(Usuario::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function negocio() : BelongsTo
+    public function lugar() : BelongsTo
     {
-        return $this->belongsTo(Negocio::class);
+        return $this->belongsTo(Lugar::class);
     }
 }

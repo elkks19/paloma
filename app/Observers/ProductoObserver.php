@@ -12,8 +12,8 @@ class ProductoObserver
      */
     public function created(Producto $producto): void
     {
-        $nombreNegocio = $producto->negocio()->lugar()->nombre;
-        Storage::makeDirectory('public/lugares/' . $nombreNegocio . '/' . $producto->nombre);
+        // $nombreNegocio = $producto()->negocio()->nombre;
+        // Storage::makeDirectory('public/lugares/' . $nombreNegocio . '/' . $producto->nombre);
     }
 
     /**

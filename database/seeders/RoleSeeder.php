@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,17 +18,17 @@ class RoleSeeder extends Seeder
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $adminPerm = Permission::create('*');
+        $permission = Permission::create(['name' => 'prueba']);
 
-        $userPerm = Permission::create(['name' => 'user']);
+        $role = Role::create(['name' => 'user']);
+        $role = Role::create(['name' => 'lugar']);
 
-        $lugaresPerm = Permission::create(['name' => 'lugares']);
+        $role->givePermissionTo($permission);
 
-        Role::create(['name' => 'admin'])->givePermissionTo($adminPerm);
-        Role::create(['name' => 'usuario']);
-        Role::create(['name' => 'lugar']);
+        $user = User::find(11);
+        $user->assignRole('user');
 
-
-
+        $user = User::find(12);
+        $user->assignRole('lugar');
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Observers\LugarObserver;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 #[ObservedBy(LugarObserver::class)]
 class Lugar extends Model
@@ -27,18 +29,21 @@ class Lugar extends Model
         'descripcion',
         'ubicacion',
         'menu',
+        'contacto',
+        'tipo',
     ];
 
     protected function casts(): array
     {
         return [
             'menu' => 'array',
+            'ubicacion' => 'array',
         ];
     }
 
-    public function negocio() : MorphTo
+    public function productos() : HasMany
     {
-        return $this->morphTo();
+        return $this->hasMany(Producto::class);
     }
 
     public function reviews() : HasMany

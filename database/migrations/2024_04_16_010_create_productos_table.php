@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use App\Models\Negocio;
+use App\Models\Lugar;
 
 return new class extends Migration
 {
@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
             $table->text('descripcion');
-            $table->foreignIdFor(Negocio::class)->constrained();
             $table->float('precio', 2);
+            $table->foreignIdFor(Lugar::class)->constrained('lugares', 'id');
             $table->softDeletes();
             $table->timestamps();
         });

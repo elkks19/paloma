@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,53 @@ class AuthenticatedSessionController extends Controller
     {
         $token = $request->authenticate();
 
-        return response()->json(['token' => $token]);
+        $user = $request->user();
+
+        $role = $user->getRoleNames()->first();
+
+        if($role == null)
+            return response()->json(['message' => 'Unauthorized'], 401);
+
+        else if($role == 'user')
+        {
+            return response()->json([
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'token' => $token,
+                'role' => $role,
+            ]);
+        }
+
+        else if($role == 'lugar')
+        {
+            $menu = [];
+            foreach ($user->lugar->menu as $menuId) {
+                $prod = Producto::find($menuId);
+
+                if ($prod == null)
+                    continue;
+
+                $menu[] = [
+                    'id' => $prod->id,
+                    'nombre' => $prod->nombre,
+                    'precio' => $prod->precio,
+                    'descripcion' => $prod->descripcion
+                ];
+            }
+
+            return response()->json([
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'token' => $token,
+                'role' => $role,
+                'lugar' => [
+                    $user->lugar,
+                    'menu' => $menu
+                ]
+            ]);
+        }
     }
 
 
