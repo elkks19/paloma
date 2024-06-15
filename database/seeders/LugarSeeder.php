@@ -63,10 +63,10 @@ class LugarSeeder extends Seeder
             'tipo' => 'Negocio',
             'calificacion' => 4.0,
             'contacto' => '77711880',
-            'user_id' => 12,
+            'user_id' => 13,
         ]);
 
-        Lugar::create([
+        Lugar::create([    
             'nombre' => 'Snack Igor',
             'descripcion' => 'Snack Igor',
             'ubicacion' => json_encode(['a' => 'b']),

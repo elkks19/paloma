@@ -19,8 +19,6 @@ class NegocioController extends Controller
         if ($user == null)
             return response()->json(['message' => 'Unauthorized'], 401);
 
-        $favoritos = $user->favoritos()->get();
-
         $response = [];
 
 
@@ -49,7 +47,6 @@ class NegocioController extends Controller
                 'menu' => $menu,
                 'calificacion' => $lugar->calificacion,
                 'contacto' => $lugar->contacto,
-                'favorito' => $favoritos->contains($lugar->id)
             ];
         }
         return response()->json($response, 200);
@@ -57,8 +54,7 @@ class NegocioController extends Controller
 
     public function register(StoreNegocioRequest $request)
     {
-        $user = Auth::user();
-        $registeredNegocio = $request->save($user->id);
+        $registeredNegocio = $request->save();
 
         if($registeredNegocio == null)
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -83,8 +79,6 @@ class NegocioController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
 
         $lugar = $request->save();
-        if($lugar == null)
-            return response()->json(['message' => 'Unauthorized'], 401);
 
         return response()->json($lugar, 200);
     }

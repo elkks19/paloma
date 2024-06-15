@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReviewController;
 
 
 Route::get('/users/nombre', [UserController::class, 'nombre']);

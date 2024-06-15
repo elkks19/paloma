@@ -60,10 +60,8 @@ class AuthenticatedSessionController extends Controller
                 'email' => $user->email,
                 'token' => $token,
                 'role' => $role,
-                'lugar' => [
-                    $user->lugar,
-                    'menu' => $menu
-                ]
+                'lugar' => $user->lugar, 
+                'menu' => $menu,
             ]);
         }
     }

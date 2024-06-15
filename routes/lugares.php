@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LugarTuristicoController;
 use App\Http\Controllers\NegocioController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ReviewController;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(LugarTuristicoController::class)->group(function () {
@@ -33,8 +34,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/favoritos/add', 'store');
     });
 
+    // RUTAS PARA LAS REVIEWS
+    Route::controller(ReviewController::class)->group(function (){
+        Route::get('/reviews/{id}', 'index');
+        Route::post('/reviews/{id}/create', 'store');
+        Route::put('/reviews/update', 'update');
+        Route::delete('/reviews/delete', 'destroy');
+    });
+
     // RUTAS PARA LOS PRODUCTOS
     // Route::controller(ProductoController::class)->group(function (){
     //     Route::get();
     // })
 });
+
+

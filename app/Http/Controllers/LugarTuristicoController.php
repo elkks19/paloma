@@ -28,7 +28,7 @@ class LugarTuristicoController extends Controller
                 'ubicacion' => $lugar->ubicacion,
                 'menu' => $lugar->menu,
                 'calificacion' => $lugar->calificacion,
-                'favorito' => $favoritos->contains($lugar->id)
+                'favorito' => $favoritos->contains($lugar->id),
             ];
         }
         return response()->json($response, 200);

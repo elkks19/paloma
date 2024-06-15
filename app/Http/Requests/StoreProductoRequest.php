@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Producto;
 
 class StoreProductoRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreProductoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,21 @@ class StoreProductoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nombre' => 'required|string',
+            'descripcion' => 'required|string',
+            'precio' => 'required|numeric',
         ];
+    }
+
+    /**
+     * Save the product in the database.
+     */
+    public function save(): void
+    {
+        Producto::create([
+            'nombre' => $this->nombre,
+            'descripcion' => $this->descripcion,
+            'precio' => $this->precio,
+        ]);
     }
 }

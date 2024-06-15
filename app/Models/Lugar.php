@@ -25,6 +25,7 @@ class Lugar extends Model
     ];
 
     protected $fillable = [
+        'user_id',
         'nombre',
         'descripcion',
         'ubicacion',

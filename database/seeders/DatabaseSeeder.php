@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
             LugarSeeder::class,
             FavoritoSeeder::class,
             ReviewSeeder::class,
-            RoleSeeder::class,
             ProductoSeeder::class,
         ]);
 

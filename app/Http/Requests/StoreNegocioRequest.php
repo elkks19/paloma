@@ -28,7 +28,7 @@ class StoreNegocioRequest extends FormRequest
         return password_verify($this->password, Auth::user()->password);
     }
 
-    public function save($id): Lugar
+    public function save(): Lugar
     {
         if(!$this->verifyPassword())
             return null;
@@ -36,10 +36,12 @@ class StoreNegocioRequest extends FormRequest
         $negocio = Lugar::create([
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
-            'user_id' => $id,
+            'user_id' => auth()->id(),
             'ubicacion' => [],
             'tipo' => 'Negocio',
         ]);
+
+        auth()->user()->syncRoles('lugar');
         
         if($negocio == null)
             return null;

@@ -27,36 +27,25 @@ class UpdateNegocioRequest extends FormRequest
         return [
             'nombre' => 'string|max:100',
             'descripcion' => 'string',
+            'contacto' => 'string',
             'ubicacion' => 'json',
             'menu' => 'json',
         ];
     }
 
-    private function verifyPassword(): bool
+    public function save()
     {
-        return password_verify($this->password, Auth::user()->password);
-    }
-
-    public function save(): Negocio 
-    {
-        if(!$this->verifyPassword())
-            return null;
-
-        $user = Auth::user();
-        $lugar = $user->lugar()->get();
-
-        if($lugar == null)
-            return null;
+        $user = auth()->user();
+        $lugar = $user->lugar;
 
         $lugar->update([
             'nombre' => $this->nombre,
             'descripcion' => $this->descripcion,
+            'contacto'  => $this->contacto,
             'ubicacion' => $this->ubicacion,
             'menu' => $this->menu,
         ]);
 
-        $negocio = $lugar->negocio()->get();
-
-        return $negocio;
+        return $lugar;
     }
 }

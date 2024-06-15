@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Producto;
+use App\Models\Lugar;
 
 class ProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function addMenu(Lugar $negocio, StoreProductoRequest $request)
     {
-        //
+        $request->save($negocio);
+
+        return response()->json(['message' => 'Producto creado'], 201);
     }
 
     /**

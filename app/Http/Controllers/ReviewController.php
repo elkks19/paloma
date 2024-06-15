@@ -12,7 +12,8 @@ class ReviewController extends Controller
     public function index(int $id)
     {
         $lugar = Lugar::find($id);
-        $reviews = $lugar->reviews();
+
+        $reviews = $lugar->reviews;
 
         return response()->json($reviews);
     }
@@ -22,36 +23,9 @@ class ReviewController extends Controller
     {
         $request->save();
 
-        return response()->isSuccessful();
+        return response()->json(['message' => 'Review created'], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Review $review)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Review $review)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateReviewRequest $request, Review $review)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Review $review)
     {
         //
